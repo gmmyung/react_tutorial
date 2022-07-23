@@ -1,28 +1,46 @@
 import { useState, useEffect } from "react"
 
-function Hello() {
-  function byeFn() {
-    console.log("By:(");
-  }
-  function hiFn() {
-    console.log("Hello!");
-    return byeFn
-  }
-  useEffect(hiFn, []);
-
-
-
-
-  return <h1>Hello!</h1>
-}
-
 function App() {
-  const [showing, setShowing] = useState(false);
-  const onClick = () => setShowing((prev) => !prev);
+  const [todo, setTodo] = useState("");
+  const [todos, setTodos] = useState([]);
+  const onChange = (e) => {
+    setTodo(e.target.value);
+  };
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (todo === "") {
+      return;
+    }
+    setTodos((prevTodos) => [todo, ...prevTodos]);
+    setTodo("");
+
+  };
   return (
-    <div className="App">
-      {showing ? <Hello /> : null}
-      <button onClick={onClick}>{showing ? "Hide" : "Show"}</button>
+    <div>
+      <h1>My To-dos ({todos.length})</h1>
+      <form action="" onSubmit={onSubmit}>
+        <input
+          type="text"
+          value={todo}
+          placeholder="Write your to do..."
+          onChange={onChange}
+        />
+        <button>Add To Do</button>
+      </form>
+      {todos.map(
+        (todo, index) => (
+          <li key={index}>
+            {todo}
+            <button
+              onClick={() => {
+                setTodos(prevTodos => {
+                  return prevTodos.filter((_, i) => i !== index);
+                });
+              }}
+            >x</button>
+          </li>
+        )
+      )}
     </div>
   );
 }
