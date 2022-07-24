@@ -16,7 +16,8 @@ function App() {
   }, []);
   const onSelect = event => {
     setCoin(event.target.value);
-    console.log(coin);
+    setInverted(false);
+    setAmount(0);
   }
   return (
     <div>
